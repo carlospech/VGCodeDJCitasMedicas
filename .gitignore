@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+citasmedicas/migrations/0001_initial.py
+citasmedicas/migrations/__init__.py
+*.pyc

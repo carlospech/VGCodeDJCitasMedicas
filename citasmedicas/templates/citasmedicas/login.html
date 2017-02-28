@@ -1,0 +1,12 @@
+{% extends "citasmedicas/base.html" %}
+{% block content %}
+<h1>Login</h1>
+{% if mensaje %}
+<b>{{mensaje}}</b>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Entrar" />
+</form>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "citasmedicas/base.html" %}
+{% block content %}
+<h1>Directorio de medicos</h1>
+{% for doctor in doctores %}
+<p>{{doctor.nombre}}<br>{{doctor.titulo}}<br>{{doctor.especialidad}}</P>
+{% endfor %}
+{% endblock %}

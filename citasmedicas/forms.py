@@ -8,6 +8,9 @@ class LoginForm(forms.Form):
 
 
 class SecretariaForm(forms.ModelForm):
+    usuario = forms.CharField()
+    contrasena = forms.CharField(widget=forms.PasswordInput)
+    repite_contrasena = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = Secretaria

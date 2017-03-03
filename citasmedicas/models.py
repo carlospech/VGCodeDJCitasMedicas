@@ -22,6 +22,7 @@ class Doctor(models.Model):
 
 class Secretaria(models.Model):
     doctor = models.ForeignKey(Doctor)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=150)
     telefono_personal = models.IntegerField()
 

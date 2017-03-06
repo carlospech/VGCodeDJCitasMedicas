@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from citasmedicas.forms import LoginForm, SecretariaForm

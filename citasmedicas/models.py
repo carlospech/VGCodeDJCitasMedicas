@@ -32,6 +32,8 @@ class Secretaria(models.Model):
 class Paciente(models.Model):
     doctor = models.ForeignKey(Doctor)
     nombre = models.CharField(max_length=150)
+    apellido_paterno = models.CharField(max_length=150)
+    apellido_materno = models.CharField(max_length=150)
     telefono_personal = models.IntegerField()
     fecha_nacimiento = models.DateField()
 

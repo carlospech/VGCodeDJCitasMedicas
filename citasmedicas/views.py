@@ -1,8 +1,11 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from citasmedicas.forms import LoginForm, SecretariaForm
-from citasmedicas.models import Doctor
+from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm
+from citasmedicas.models import Doctor, Paciente
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+
 
 
 def login_page(request):
@@ -48,3 +51,32 @@ def secretaria_alta(request):
     return render(request,
                   'citasmedicas/secretaria_alta.html',
                   {'form': form})
+
+def paciente_alta(request):
+    if request.method == 'POST':
+        form = PacienteForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            doctor = clean_data.get('doctor')
+            nombre = clean_data.get('nombre')
+            apellido_paterno = clean_data.get('apellido_paterno')
+            apellido_materno = clean_data.get('apellido_materno')
+            telefono_personal = clean_data.get('telefono_personal')
+            fecha_nacimiento = clean_data.get('fecha_nacimiento')
+            paciente_model = Paciente()
+            paciente_model.doctor = doctor
+            paciente_model.nombre = nombre
+            paciente_model.apellido_paterno = apellido_paterno
+            paciente_model.apellido_materno = apellido_materno
+            paciente_model.telefono_personal = telefono_personal
+            paciente_model.fecha_nacimiento = fecha_nacimiento
+            paciente_model.save()
+            messages.success(request, 'Paciente guardado con exitó')
+            return redirect('alta_paciente')
+    else:
+        form = PacienteForm()
+    pacientes = Paciente.objects.all()
+    return render(request,
+                  'citasmedicas/paciente_alta.html',
+                  {'form':form,
+                  'pacientes':pacientes})

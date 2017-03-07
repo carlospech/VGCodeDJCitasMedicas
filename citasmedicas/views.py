@@ -1,8 +1,8 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm
-from citasmedicas.models import Doctor, Paciente
+from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm, ConsultorioForm
+from citasmedicas.models import Doctor, Paciente, Consultorio
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
@@ -72,7 +72,7 @@ def paciente_alta(request):
             paciente_model.fecha_nacimiento = fecha_nacimiento
             paciente_model.save()
             messages.success(request, 'Paciente guardado con exitó')
-            return redirect('alta_paciente')
+            return redirect('paciente_alta')
     else:
         form = PacienteForm()
     pacientes = Paciente.objects.all()
@@ -80,3 +80,26 @@ def paciente_alta(request):
                   'citasmedicas/paciente_alta.html',
                   {'form':form,
                   'pacientes':pacientes})
+
+def consultorio_alta(request):
+    if request.method == 'POST':
+        form = ConsultorioForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            doctor = clean_data.get('doctor')
+            descripcion = clean_data.get('descripcion')
+            direccion = clean_data.get('direccion')
+            consultorio_model = Consultorio()
+            consultorio_model.doctor = doctor
+            consultorio_model.descripcion = descripcion
+            consultorio_model.direccion = direccion
+            consultorio_model.save()
+            messages.success(request, 'Consultorio guardado con exitó')
+            return redirect('consultorio_alta')
+    else:
+        form = ConsultorioForm()
+    consultorios = Consultorio.objects.all()
+    return render(request,
+                  'citasmedicas/consultorio_alta.html',
+                  {'form': form,
+                   'consultorios': consultorios})

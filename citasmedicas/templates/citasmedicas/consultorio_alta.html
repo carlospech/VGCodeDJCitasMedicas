@@ -1,0 +1,13 @@
+{% extends "citasmedicas/base.html" %}
+{% include 'citasmedicas/_messages.html' %}
+{% block content %}
+<h1>Consultorio</h1>
+{% for consultorio in consultorios %}
+<p><strong>Nombre: </strong> {{consultorio.doctor}} <strong>Direccion:</strong> {{consultorio.direccion}}</p>
+{% endfor %}
+<form method="POST">
+    {% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit">Guardar</button>
+</form>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from citasmedicas.models import Secretaria, Paciente
+from citasmedicas.models import Secretaria, Paciente, Consultorio
 
 
 class LoginForm(forms.Form):
@@ -21,3 +21,9 @@ class PacienteForm(forms.ModelForm):
         fields = ('doctor', 'nombre', 'apellido_paterno',
                   'apellido_materno', 'telefono_personal',
                   'fecha_nacimiento')
+
+class ConsultorioForm(forms.ModelForm):
+
+    class Meta:
+        model = Consultorio
+        fields = ('doctor', 'descripcion', 'direccion')

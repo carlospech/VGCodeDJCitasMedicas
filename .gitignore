@@ -48,3 +48,4 @@ Temporary Items
 citasmedicas/migrations/0001_initial.py
 citasmedicas/migrations/__init__.py
 *.pyc
+citasmedicas/migrations/0002_auto_20170306_1717.py

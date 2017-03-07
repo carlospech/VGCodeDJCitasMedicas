@@ -1,7 +1,17 @@
 {% extends "citasmedicas/base.html" %}
 {% block content %}
-<h1>Directorio de medicos</h1>
-{% for doctor in doctores %}
-<p>{{doctor.nombre}}<br>{{doctor.titulo}}<br>{{doctor.especialidad}}</P>
-{% endfor %}
+<div class="container">
+    <h1 style="font-size:63px;text-align:center;">Directorio de medicos</h1>
+
+    <div class="row">
+        {% for doctor in doctores %}
+        <div class="col-lg-4">
+            <h2>{{doctor.nombres}} {{doctor.apellido_paterno}} {{doctor.apellido_materno}}</h2>
+            <p>{{doctor.titulo}}</p>
+            <p>{{doctor.especialidad}}</p>
+            <p><a class="btn btn-primary" href="#" role="button">Consultorio(s) &raquo;</a></p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

@@ -6,7 +6,9 @@ from django.contrib.auth.models import User
 
 class Doctor(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=150)
+    nombres = models.CharField(max_length=100)
+    apellido_paterno = models.CharField(max_length=50)
+    apellido_materno = models.CharField(max_length=50, blank=True)
     titulo = models.CharField(max_length=100)
     especialidad = models.CharField(max_length=50, blank=True, null=True)
     cedula_profesional = models.CharField(max_length=8)
@@ -17,16 +19,19 @@ class Doctor(models.Model):
         verbose_name_plural = 'Doctores'
 
     def __str__(self):
-        return self.nombre
+        return self.nombres
 
 
 class Secretaria(models.Model):
     doctor = models.ForeignKey(Doctor)
-    nombre = models.CharField(max_length=150)
-    telefono_personal = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombres = models.CharField(max_length=100)
+    apellido_paterno = models.CharField(max_length=50)
+    apellido_materno = models.CharField(max_length=50, blank=True)
+    telefono_personal = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.nombre
+        return self.nombres
 
 
 class Paciente(models.Model):

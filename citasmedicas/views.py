@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from citasmedicas.forms import LoginForm, SecretariaForm
 from citasmedicas.models import Doctor
 
@@ -16,7 +18,7 @@ def login_page(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    mensaje = "Usuario logeado"
+                    return redirect(request.GET['next'])
                 else:
                     mensaje = "Usuario inactivo"
             else:
@@ -28,6 +30,11 @@ def login_page(request):
                   {'mensaje': mensaje, 'form': form})
 
 
+def logout_page(request):
+    logout(request)
+    return redirect('index')
+
+
 def index(request):
     doctores = Doctor.objects.all()
     return render(request,
@@ -35,33 +42,30 @@ def index(request):
                   {'doctores': doctores})
 
 
+@login_required(login_url='login')
 def secretaria_alta(request):
     mensaje = None
     try:
         doctor = Doctor.objects.get(usuario=request.user)
     except Doctor.DoesNotExist:
         doctor = None
-        mensaje = "Acceso no autorizado"
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
     if request.method == "POST":
         form = SecretariaForm(request.POST)
         if doctor:
-            if request.POST['contrasena'] == request.POST['repite_contrasena']:
-                if not User.objects.filter(username=request.POST['usuario']).exists():
-                    if form.is_valid():
-                        secretaria = form.save(commit=False)
-                        secretaria.doctor = doctor
-                        usuario = User.objects.create_user(
-                            username=request.POST['usuario'],
-                            password=request.POST['contrasena'],
-                        )
-                        usuario.save()
-                        secretaria.usuario = usuario
-                        secretaria.save()
-                    return redirect('index')
-                else:
-                    mensaje = "El usuario '" + request.POST['usuario'] + "' ya existe. Capture uno nuevo."
-            else:
-                mensaje = "La contraseña no es igual, intente de nuevo"
+            if form.is_valid():
+                secretaria = form.save(commit=False)
+                secretaria.doctor = doctor
+                usuario = User.objects.create_user(
+                    username=request.POST['usuario'],
+                    password=request.POST['contrasena'],
+                )
+                usuario.save()
+                secretaria.usuario = usuario
+                secretaria.save()
+                return redirect('index')
         return render(request,
                       'citasmedicas/secretaria_alta.html',
                       {'mensaje': mensaje, 'form': form})

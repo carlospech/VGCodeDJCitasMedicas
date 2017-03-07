@@ -1,20 +1,12 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-<<<<<<< HEAD
-from django.contrib.auth import authenticate, login
 from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm, ConsultorioForm
 from citasmedicas.models import Doctor, Paciente, Consultorio
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-
-=======
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from citasmedicas.forms import LoginForm, SecretariaForm
-from citasmedicas.models import Doctor
->>>>>>> master
 
 
 def login_page(request):
@@ -83,7 +75,6 @@ def secretaria_alta(request):
         form = SecretariaForm()
     return render(request,
                   'citasmedicas/secretaria_alta.html',
-<<<<<<< HEAD
                   {'form': form})
 
 def paciente_alta(request):
@@ -137,6 +128,3 @@ def consultorio_alta(request):
                   'citasmedicas/consultorio_alta.html',
                   {'form': form,
                    'consultorios': consultorios})
-=======
-                  {'mensaje': mensaje, 'form': form})
->>>>>>> master

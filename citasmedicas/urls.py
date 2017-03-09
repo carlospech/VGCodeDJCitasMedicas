@@ -6,5 +6,8 @@ urlpatterns = [
     url(r'^logout$', views.logout_page, name='logout'),
     url(r'^secretaria/alta$', views.secretaria_alta, name='alta_secretaria'),
     url(r'^paciente/alta$', views.paciente_alta, name='paciente_alta'),
+    url(r'^paciente/lista/$', views.paciente_lista, name='paciente_lista'),
+    url(r'^paciente/editar/(?P<pk>\d+)/$', views.paciente_editar,
+        name='paciente_editar'),
     url(r'^consultorio/alta$', views.consultorio_alta, name='consultorio_alta')
 ]

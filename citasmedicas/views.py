@@ -1,13 +1,14 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm, ConsultorioForm
+from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm, \
+                                ConsultorioForm
 from citasmedicas.models import Doctor, Paciente, Consultorio
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 
 def index(request):
     doctores = Doctor.objects.all()
@@ -107,11 +108,59 @@ def paciente_alta(request):
             return redirect('paciente_alta')
     else:
         form = PacienteForm()
-    pacientes = Paciente.objects.all()
     return render(request,
                   'citasmedicas/paciente_alta.html',
-                  {'form':form,
-                  'pacientes':pacientes})
+                  {'form': form})
+
+
+def paciente_editar(request, pk=0):
+    if request.method == 'POST':
+        form = PacienteForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            doctor = clean_data.get('doctor')
+            nombre = clean_data.get('nombre')
+            apellido_paterno = clean_data.get('apellido_paterno')
+            apellido_materno = clean_data.get('apellido_materno')
+            telefono_personal = clean_data.get('telefono_personal')
+            fecha_nacimiento = clean_data.get('fecha_nacimiento')
+            paciente_model = Paciente(pk)
+            paciente_model.doctor = doctor
+            paciente_model.nombre = nombre
+            paciente_model.apellido_paterno = apellido_paterno
+            paciente_model.apellido_materno = apellido_materno
+            paciente_model.telefono_personal = telefono_personal
+            paciente_model.fecha_nacimiento = fecha_nacimiento
+            paciente_model.save()
+            messages.success(request, 'Paciente se actualizo con exitó')
+            return redirect('paciente_alta')
+    else:
+        try:
+            paciente = Paciente.objects.get(pk=pk)
+            form = PacienteForm(instance=paciente)
+        except Paciente.DoesNotExist:
+            form = None
+    return render(request, 'citasmedicas/paciente_alta.html',
+                  {'form_edit': form})
+
+
+def paciente_lista(request):
+    results = {}
+    query = request.GET.get('q', '')
+    if query:
+        results['pacientes'] = Paciente.objects.all().filter(
+            Q(nombre__icontains=query) |
+            Q(apellido_materno__icontains=query) |
+            Q(apellido_paterno__icontains=query)
+        )
+    else:
+        results['pacientes'] = Paciente.objects.all()
+    context = {
+        'results': results,
+        'query': query
+    }
+    return render(request, 'citasmedicas/paciente_alta.html', context)
+
 
 
 def consultorio_alta(request):

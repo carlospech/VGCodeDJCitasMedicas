@@ -1,7 +1,8 @@
 # coding: utf-8
 from django import forms
-from citasmedicas.models import Secretaria, Paciente, Consultorio
+from citasmedicas.models import Secretaria, Paciente, Consultorio, Doctor
 from django.contrib.auth.models import User
+from django.contrib.admin.widgets import AdminDateWidget
 
 
 class LoginForm(forms.Form):
@@ -34,14 +35,24 @@ class SecretariaForm(forms.ModelForm):
         return repite_contrasena
 
 
-
 class PacienteForm(forms.ModelForm):
-
+    doctor = forms.ModelChoiceField(
+        queryset=Doctor.objects.all(),
+        widget=forms.Select(
+            attrs={'class': 'form-control', 'placeholder': 'doctor'})
+    )
+    nombre = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Username'}))
+    apellido_paterno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_paterno'}))
+    apellido_materno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_materno'}))
+    telefono_personal = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'telefono_personal'}))
+    fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget())
+    
     class Meta:
         model = Paciente
         fields = ('doctor', 'nombre', 'apellido_paterno',
                   'apellido_materno', 'telefono_personal',
                   'fecha_nacimiento')
+
 
 class ConsultorioForm(forms.ModelForm):
 

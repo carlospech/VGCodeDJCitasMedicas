@@ -9,6 +9,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 
+def index(request):
+    doctores = Doctor.objects.all()
+    return render(request,
+                  'citasmedicas/index.html',
+                  {'doctores': doctores})
+
+
+@login_required(login_url='login')
+def citasmedicas_index(request):
+    return render(request,
+                  'citasmedicas/citasmedicas_index.html')
+
+
 def login_page(request):
     mensaje = None
     if request.method == "POST":
@@ -34,14 +47,7 @@ def login_page(request):
 
 def logout_page(request):
     logout(request)
-    return redirect('index')
-
-
-def index(request):
-    doctores = Doctor.objects.all()
-    return render(request,
-                  'citasmedicas/index.html',
-                  {'doctores': doctores})
+    return redirect('citasmedicas_index')
 
 
 @login_required(login_url='login')
@@ -77,6 +83,7 @@ def secretaria_alta(request):
                   'citasmedicas/secretaria_alta.html',
                   {'form': form})
 
+
 def paciente_alta(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
@@ -105,6 +112,7 @@ def paciente_alta(request):
                   'citasmedicas/paciente_alta.html',
                   {'form':form,
                   'pacientes':pacientes})
+
 
 def consultorio_alta(request):
     if request.method == 'POST':

@@ -22,12 +22,12 @@
                     <a class="navbar-brand" href="#">Citas medicas</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Citas</a></li>
+                    <li class="active"><a href="{% url 'citasmedicas_index' %}">Citas</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Paciente<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'paciente_alta' %}">Alta</a></li>
-                            <li><a href="#">Modificación</a></li>
+                            <li><a href="{% url 'paciente_lista' %}">Modificación</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

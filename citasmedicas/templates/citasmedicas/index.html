@@ -1,11 +1,11 @@
 {% extends "citasmedicas/base.html" %}
 {% block content %}
 <div class="container">
-    <h1 style="font-size:63px;text-align:center;">Directorio de medicos</h1>
+    <h1 class="VGCTitulo">Directorio de medicos</h1>
     <div class="row">
         {% for doctor in doctores %}
-        <div class="col-lg-4">
-            <h2>{{doctor.nombres}} {{doctor.apellido_paterno}} {{doctor.apellido_materno}}</h2>
+        <div class="col-sm-4">
+            <h2 style="font-family:'Lobster'">{{doctor.nombres}} {{doctor.apellido_paterno}} {{doctor.apellido_materno}}</h2>
             <p>{{doctor.titulo}}</p>
             <p>{{doctor.especialidad}}</p>
             <p><a class="btn btn-primary" href="#" role="button">Consultorio(s) &raquo;</a></p>

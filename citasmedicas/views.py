@@ -1,8 +1,8 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-from citasmedicas.forms import LoginForm, SecretariaForm, PacienteForm, \
+from citasmedicas.forms import LoginForm, SecretariaForm, SecretariaEditForm, PacienteForm, \
                                 ConsultorioForm
-from citasmedicas.models import Doctor, Paciente, Consultorio
+from citasmedicas.models import Doctor, Secretaria, Paciente, Consultorio
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -53,7 +53,6 @@ def logout_page(request):
 
 @login_required(login_url='login')
 def secretaria_alta(request):
-    mensaje = None
     try:
         doctor = Doctor.objects.get(usuario=request.user)
     except Doctor.DoesNotExist:
@@ -63,23 +62,66 @@ def secretaria_alta(request):
                       'citasmedicas/mensajes_usuarios.html')
     if request.method == "POST":
         form = SecretariaForm(request.POST)
-        if doctor:
-            if form.is_valid():
-                secretaria = form.save(commit=False)
-                secretaria.doctor = doctor
-                usuario = User.objects.create_user(
-                    username=request.POST['usuario'],
-                    password=request.POST['contrasena'],
-                )
-                usuario.save()
-                secretaria.usuario = usuario
-                secretaria.save()
-                return redirect('index')
-        return render(request,
-                      'citasmedicas/secretaria_alta.html',
-                      {'mensaje': mensaje, 'form': form})
+        if form.is_valid():
+            secretaria = form.save(commit=False)
+            secretaria.doctor = doctor
+            usuario = User.objects.create_user(
+                username=request.POST['usuario'],
+                password=request.POST['contrasena'],
+            )
+            usuario.save()
+            secretaria.usuario = usuario
+            secretaria.save()
+            return redirect('secretaria_lista')
     else:
         form = SecretariaForm()
+    return render(request,
+                  'citasmedicas/secretaria_alta.html',
+                  {'form': form})
+
+
+@login_required(login_url='login')
+def secretaria_lista(request):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
+    secretarias = Secretaria.objects.filter(doctor=doctor)
+    return render(request, 'citasmedicas/secretaria_lista.html', {'secretarias': secretarias})
+
+
+@login_required(login_url='login')
+def secretaria_edita(request, pk):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
+    if request.method == "POST":
+        form = SecretariaEditForm(request.POST)
+        if form.is_valid():
+            datos_limpios = form.cleaned_data
+            secretaria = Secretaria.objects.get(pk=pk)
+            secretaria.nombres = datos_limpios.get('nombres')
+            secretaria.apellido_paterno = datos_limpios.get('apellido_paterno')
+            secretaria.apellido_materno = datos_limpios.get('apellido_materno')
+            secretaria.telefono_personal = datos_limpios.get('telefono_personal')
+            secretaria.save()
+            return redirect('secretaria_lista')
+    else:
+        try:
+            secretaria = Secretaria.objects.get(pk=pk)
+        except Secretaria.DoesNotExist:
+            secretaria = None
+            messages.warning(request, "La secretaria no existe.")
+            return render(request,
+                          'citasmedicas/mensajes_usuarios.html')
+        form = SecretariaEditForm(instance=secretaria)
     return render(request,
                   'citasmedicas/secretaria_alta.html',
                   {'form': form})

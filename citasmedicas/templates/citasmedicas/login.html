@@ -1,14 +1,16 @@
 {% extends "citasmedicas/base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Login</h1>
-    {% if mensaje %}
-    <b>{{mensaje}}</b>
-    {% endif %}
-    <form action="" method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Entrar" />
-    </form>
+    <div class="row center-block" style="width:300px">
+        <h1 class="VGCTitulo">Login</h1>
+        {% if mensaje %}
+            <div class="alert alert-warning text-center">{{mensaje}}</div>
+        {% endif %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input class="form-control btn btn-primary" type="submit" value="Entrar" />
+        </form>
+    </div>
 </div>
 {% endblock %}

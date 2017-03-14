@@ -65,20 +65,15 @@ class SecretariaEditForm(forms.ModelForm):
 
 
 class PacienteForm(forms.ModelForm):
-    doctor = forms.ModelChoiceField(
-        queryset=Doctor.objects.all(),
-        widget=forms.Select(
-            attrs={'class': 'form-control', 'placeholder': 'doctor'})
-    )
     nombre = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Username'}))
     apellido_paterno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_paterno'}))
     apellido_materno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_materno'}))
     telefono_personal = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'telefono_personal'}))
     fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget())
-    
+
     class Meta:
         model = Paciente
-        fields = ('doctor', 'nombre', 'apellido_paterno',
+        fields = ('nombre', 'apellido_paterno',
                   'apellido_materno', 'telefono_personal',
                   'fecha_nacimiento')
 

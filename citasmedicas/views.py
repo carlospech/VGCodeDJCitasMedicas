@@ -127,19 +127,27 @@ def secretaria_edita(request, pk):
                   {'form': form})
 
 
+@login_required(login_url='login')
 def paciente_alta(request):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
     if request.method == 'POST':
-        form = PacienteForm(request.POST)
+        form = PacienteForm(request.POST, instance=doctor)
         if form.is_valid():
             clean_data = form.cleaned_data
-            doctor = clean_data.get('doctor')
+            doctor_pk = doctor.pk
             nombre = clean_data.get('nombre')
             apellido_paterno = clean_data.get('apellido_paterno')
             apellido_materno = clean_data.get('apellido_materno')
             telefono_personal = clean_data.get('telefono_personal')
             fecha_nacimiento = clean_data.get('fecha_nacimiento')
             paciente_model = Paciente()
-            paciente_model.doctor = doctor
+            paciente_model.doctor = doctor_pk
             paciente_model.nombre = nombre
             paciente_model.apellido_paterno = apellido_paterno
             paciente_model.apellido_materno = apellido_materno
@@ -155,6 +163,7 @@ def paciente_alta(request):
                   {'form': form})
 
 
+@login_required(login_url='login')
 def paciente_editar(request, pk=0):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
@@ -186,17 +195,28 @@ def paciente_editar(request, pk=0):
                   {'form_edit': form})
 
 
+@login_required(login_url='login')
 def paciente_lista(request):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
     results = {}
     query = request.GET.get('q', '')
     if query:
-        results['pacientes'] = Paciente.objects.all().filter(
+        results['pacientes'] = Paciente.objects.filter(
+            Q(doctor=doctor),
             Q(nombre__icontains=query) |
             Q(apellido_materno__icontains=query) |
             Q(apellido_paterno__icontains=query)
         )
+        if not results:
+            results['pacientes'] = Paciente.objects.filter(doctor=doctor)
     else:
-        results['pacientes'] = Paciente.objects.all()
+        results['pacientes'] = Paciente.objects.filter(doctor=doctor)
     context = {
         'results': results,
         'query': query
@@ -204,7 +224,7 @@ def paciente_lista(request):
     return render(request, 'citasmedicas/paciente_alta.html', context)
 
 
-
+@login_required(login_url='login')
 def consultorio_alta(request):
     if request.method == 'POST':
         form = ConsultorioForm(request.POST)

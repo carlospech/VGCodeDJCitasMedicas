@@ -3,6 +3,7 @@ from django import forms
 from citasmedicas.models import Secretaria, Paciente, Consultorio, Doctor
 from django.contrib.auth.models import User
 from django.contrib.admin.widgets import AdminDateWidget
+from datetime import datetime
 
 
 class LoginForm(forms.Form):
@@ -67,11 +68,21 @@ class SecretariaEditForm(forms.ModelForm):
 
 
 class PacienteForm(forms.ModelForm):
-    nombre = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Username'}))
-    apellido_paterno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_paterno'}))
-    apellido_materno = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'apellido_materno'}))
-    telefono_personal = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'telefono_personal'}))
-    fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget())
+    nombre = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Nombres'})
+    )
+    apellido_paterno = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Apellido Paterno'})
+    )
+    apellido_materno = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Apellido Materno'})
+    )
+    telefono_personal = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Pelefono Personal'})
+    )
+    fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget(
+        years=range(1980, datetime.now().year + 1)
+    ))
 
     class Meta:
         model = Paciente
@@ -81,7 +92,12 @@ class PacienteForm(forms.ModelForm):
 
 
 class ConsultorioForm(forms.ModelForm):
+    direccion = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Direccion'}))
+    descripcion = forms.CharField(widget=forms.Textarea(
+        attrs={'class': 'form-control', 'placeholder': ''}
+    ))
 
     class Meta:
         model = Consultorio
-        fields = ('doctor', 'descripcion', 'direccion')
+        fields = ('direccion', 'descripcion')

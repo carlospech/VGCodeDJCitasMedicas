@@ -155,7 +155,7 @@ def paciente_alta(request):
             paciente_model.fecha_nacimiento = fecha_nacimiento
             paciente_model.save()
             messages.success(request, 'Paciente guardado con exitó')
-            return redirect('paciente_alta')
+            return redirect('paciente_lista')
     else:
         form = PacienteForm()
     return render(request,
@@ -165,11 +165,17 @@ def paciente_alta(request):
 
 @login_required(login_url='login')
 def paciente_editar(request, pk=0):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
     if request.method == 'POST':
         form = PacienteForm(request.POST)
         if form.is_valid():
             clean_data = form.cleaned_data
-            doctor = clean_data.get('doctor')
             nombre = clean_data.get('nombre')
             apellido_paterno = clean_data.get('apellido_paterno')
             apellido_materno = clean_data.get('apellido_materno')
@@ -184,7 +190,7 @@ def paciente_editar(request, pk=0):
             paciente_model.fecha_nacimiento = fecha_nacimiento
             paciente_model.save()
             messages.success(request, 'Paciente se actualizo con exitó')
-            return redirect('paciente_alta')
+            return redirect('paciente_lista')
     else:
         try:
             paciente = Paciente.objects.get(pk=pk)
@@ -226,24 +232,90 @@ def paciente_lista(request):
 
 @login_required(login_url='login')
 def consultorio_alta(request):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
     if request.method == 'POST':
-        form = ConsultorioForm(request.POST)
+        form = ConsultorioForm(request.POST, instance=doctor)
         if form.is_valid():
             clean_data = form.cleaned_data
-            doctor = clean_data.get('doctor')
+            doctor_pk = doctor
             descripcion = clean_data.get('descripcion')
             direccion = clean_data.get('direccion')
             consultorio_model = Consultorio()
-            consultorio_model.doctor = doctor
+            consultorio_model.doctor = doctor_pk
             consultorio_model.descripcion = descripcion
             consultorio_model.direccion = direccion
             consultorio_model.save()
             messages.success(request, 'Consultorio guardado con exitó')
-            return redirect('consultorio_alta')
+            return redirect('consultorio_lista')
     else:
         form = ConsultorioForm()
-    consultorios = Consultorio.objects.all()
     return render(request,
                   'citasmedicas/consultorio_alta.html',
-                  {'form': form,
-                   'consultorios': consultorios})
+                  {'form': form})
+
+
+@login_required(login_url='login')
+def consultorio_editar(request, pk=0):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
+    if request.method == 'POST':
+        form = ConsultorioForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            direccion = clean_data.get('direccion')
+            descripcion = clean_data.get('descripcion')
+            consultorio_model = Consultorio(pk)
+            consultorio_model.doctor = doctor
+            consultorio_model.direccion = direccion
+            consultorio_model.descripcion = descripcion
+            consultorio_model.save()
+            messages.success(request, 'Consultorio se actualizo con exitó')
+            return redirect('consultorio_lista')
+    else:
+        try:
+            consultorio = Consultorio.objects.get(pk=pk)
+            form = ConsultorioForm(instance=consultorio)
+        except Consultorio.DoesNotExist:
+            form = None
+    return render(request, 'citasmedicas/consultorio_alta.html',
+        {'form_edit': form}
+    )
+
+
+@login_required(login_url='login')
+def consultorio_lista(request):
+    try:
+        doctor = Doctor.objects.get(usuario=request.user)
+    except Doctor.DoesNotExist:
+        doctor = None
+        messages.warning(request, "Acceso no autorizado")
+        return render(request,
+                      'citasmedicas/mensajes_usuarios.html')
+    results = {}
+    query = request.GET.get('q', '')
+    if query:
+        results['consultorios'] = Consultorio.objects.filter(
+            Q(doctor=doctor),
+            Q(direccion__icontains=query) |
+            Q(descripcion__icontains=query)
+        )
+        if not results:
+            results['consultorios'] = Consultorio.objects.filter(doctor=doctor)
+    else:
+        results['consultorios'] = Consultorio.objects.filter(doctor=doctor)
+    context = {
+        'results': results,
+        'quer': query
+    }
+    return render(request, 'citasmedicas/consultorio_alta.html', context)

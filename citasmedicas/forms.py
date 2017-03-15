@@ -48,7 +48,9 @@ class SecretariaForm(forms.ModelForm):
             raise forms.ValidationError("La contraseña no es igual, intente de nuevo.")
         return repite_contrasena
 
+
 class SecretariaEditForm(forms.ModelForm):
+
     class Meta:
         model = Secretaria
         fields = ('nombres', 'apellido_paterno', 'apellido_materno', 'telefono_personal')

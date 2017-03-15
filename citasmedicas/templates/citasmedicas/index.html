@@ -1,14 +1,44 @@
 {% extends "citasmedicas/base.html" %}
+{% load static %}
 {% block content %}
 <div class="container">
-    <h1 class="VGCTitulo">Directorio de medicos</h1>
+    <div class="jumbotron text-right" style="background-color:#BAE0FF;">
+        <div class="row">
+            <div class="col-xs-3">
+                <img class="img-responsive" src="{% static 'citasmedicas/img/estetoscopio_consultas_1.png' %}">
+            </div>
+            <div class="col-xs-9">
+                <h1>Directorio de medicos</h1>
+            </div>
+        </div>
+    </div>
     <div class="row">
         {% for doctor in doctores %}
-        <div class="col-sm-4">
-            <h2 style="font-family:'Lobster'">{{doctor.nombres}} {{doctor.apellido_paterno}} {{doctor.apellido_materno}}</h2>
-            <p>{{doctor.titulo}}</p>
-            <p>{{doctor.especialidad}}</p>
-            <p><a class="btn btn-primary" href="#" role="button">Consultorio(s) &raquo;</a></p>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <h4>{{doctor.nombres}}<br>{{doctor.apellido_paterno}} {{doctor.apellido_materno}}</h4>
+                        </div>
+                        <div class="col-xs-3">
+                            <img class="img-responsive" src="{% static 'citasmedicas/img/doctor_79x79.png' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p><strong>Titulo:</strong> {{doctor.titulo}}</p>
+                    <p><strong>Especialidad:</strong> {{doctor.especialidad}}</p>
+                    <!--<p><a class="btn btn-primary" href="#" role="button">Consultorio(s) &raquo;</a></p>-->
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">Consultorio(s)</span>
+                        <span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
         </div>
         {% endfor %}
     </div>

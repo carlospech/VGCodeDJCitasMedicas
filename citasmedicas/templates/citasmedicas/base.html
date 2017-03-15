@@ -14,11 +14,8 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <img class="img-responsive" style="margin:0 auto" src="{% static 'citasmedicas/img/logo-md.png' %}">
-    </div>
     {% if user.is_authenticated %}
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Citas medicas</a>

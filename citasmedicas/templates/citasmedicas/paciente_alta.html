@@ -1,28 +1,101 @@
 {% extends "citasmedicas/base.html" %}
 {% include 'citasmedicas/_messages.html' %}
 {% block content %}
-  <div class="container">
+  {% load static %}
+  {% static "citasmedicas/img/computer.jpg" as myphoto %}
+  <div class="container" style="background-image: url('{{ myphoto }}'); background-size:110%,110%;">    
     <h1 style="font-size:63px;text-align:center;">Paciente</h1>
     <div class="row">
-      <div class="col-lg-20">
+      <div class="group col-lg-20">
         {% if form %}
-          <form method="POST">
-            {% csrf_token %}
-        	   {{ form.as_p }}
-             <button  class="btn btn-success btn-lg" type="submit">
-               <i class="glyphicon glyphicon-save"> Guardar </i>
-             </button>
-          </form>
+        <div class="container">
+          <div class="col-lg-offset-3 col-lg-6" id="panel">
+            <h4 style="text-align:center;">Agregar</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="group">
+                  {{ form.nombre }}
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Nombre</label>
+                </div>
+                <div class="group">
+                  {{ form.apellido_paterno }}
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Apellido Paterno</label>
+                </div>
+                <div class="group">
+                  {{ form.apellido_materno }}
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Apellido Materno</label>
+                </div>
+                <div class="group">
+                  {{ form.telefono_personal }}
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Telefono Personal</label>
+                </div>
+                <div class="group">
+                  <span>Fecha de nacimiento:</span>
+                  {{ form.fecha_nacimiento }}
+                </div>
+                <div class="group">
+                  <center>
+                    <button  class="btn btn-success" type="submit">
+                      <i class="glyphicon glyphicon-edit"> Guardar </i>
+                    </button>
+                  </center>
+                </div>
+            </form>
+          </div>
+        </div>
         {% endif %}
         {% if form_edit %}
-          <h4 style="text-align:center;">Editar</h4>
-          <form method="POST">
-            {% csrf_token %}
-        	   {{ form_edit.as_p }}
-             <button  class="btn btn-success btn-lg" type="submit">
-               <i class="glyphicon glyphicon-edit"> Editar </i>
-             </button>
-          </form>
+          <div class="container">
+            <div class="col-lg-offset-3 col-lg-6" id="panel">
+              <h4 style="text-align:center;">Editar</h4>
+              <form method="POST">
+                  {% csrf_token %}
+                  <div class="group">
+                    {{ form_edit.nombre }}
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Nombre</label>
+                  </div>
+                  <div class="group">
+                    {{ form_edit.apellido_paterno }}
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Apellido Paterno</label>
+                  </div>
+                  <div class="group">
+                    {{ form_edit.apellido_materno }}
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Apellido Materno</label>
+                  </div>
+                  <div class="group">
+                    {{ form_edit.telefono_personal }}
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Telefono Personal</label>
+                  </div>
+                  <div class="group">
+                    <span>Fecha de nacimiento:</span>
+                    {{ form_edit.fecha_nacimiento }}
+                  </div>
+                  <div class="group">
+                    <center>
+                      <button  class="btn btn-success" type="submit">
+                        <i class="glyphicon glyphicon-edit"> Editar </i>
+                      </button>
+                    </center>
+                  </div>
+              </form>
+            </div>
+          </div>
         {% endif %}
       </div>
     </div>

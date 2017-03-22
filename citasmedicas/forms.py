@@ -69,16 +69,16 @@ class SecretariaEditForm(forms.ModelForm):
 
 class PacienteForm(forms.ModelForm):
     nombre = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Nombres'})
+        attrs={})
     )
     apellido_paterno = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Apellido Paterno'})
+        attrs={})
     )
     apellido_materno = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Apellido Materno'})
+        attrs={})
     )
     telefono_personal = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Pelefono Personal'})
+        attrs={'max': '9999999999'})
     )
     fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget(
         years=range(1980, datetime.now().year + 1)

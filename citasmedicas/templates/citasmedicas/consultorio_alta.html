@@ -1,14 +1,27 @@
 {% extends "citasmedicas/base.html" %}
 {% include 'citasmedicas/mensajes_usuarios.html' %}
+room.jpg
 {% block content %}
-  <div class="container">
-    <h1 style="font-size:63px;text-align:center;">Consultorio</h1>
-    <div class="row">
-      <div class="col-lg-20">
+{% load static %}
+{% static "citasmedicas/img/room.jpg" as myphoto %}
+  <div class="container" style="background-image: url('{{ myphoto }}'); background-size:100%,100%;">
+    <div class="col-lg-offset-3 col-lg-6" id="panel">
+      <h1 style="font-size:63px;text-align:center;">Consultorio</h1>
         {% if form %}
           <form method="POST">
             {% csrf_token %}
-        	   {{ form.as_p }}
+            <div class="group">
+              {{ form.direccion }}
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Direccion</label>
+            </div>
+            <div class="group">
+              {{ form.descripcion }}
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Descripcion</label>
+            </div>
               <button  class="btn btn-success btn-lg" type="submit">
                 <i class="glyphicon glyphicon-save"> Guardar </i>
               </button>
@@ -18,13 +31,24 @@
           <h4 style="text-align:center;">Editar</h4>
           <form method="POST">
             {% csrf_token %}
-        	   {{ form_edit.as_p }}
+            <div class="group">
+              {{ form_edit.direccion }}
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Direccion</label>
+            </div>
+            <div class="group">
+              {{ form_edit.descripcion }}
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Descripcion</label>
+            </div>
              <button  class="btn btn-success btn-lg" type="submit">
                <i class="glyphicon glyphicon-edit"> Editar </i>
              </button>
           </form>
         {% endif %}
-      </div>
+
     </div>
     {% if results.consultorios %}
       <div class="container" id="seach_data">

@@ -1,14 +1,16 @@
 # coding: utf-8
-from django.shortcuts import render, redirect
-from citasmedicas.forms import LoginForm, SecretariaForm, SecretariaEditForm, PacienteForm, \
-                                ConsultorioForm
-from citasmedicas.models import Doctor, Secretaria, Paciente, Consultorio
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.shortcuts import redirect, render
+
+from citasmedicas.forms import (ConsultorioForm, LoginForm, PacienteForm,
+                                SecretariaEditForm, SecretariaForm)
+from citasmedicas.models import Consultorio, Doctor, Paciente, Secretaria
+
 
 def index(request):
     doctores = Doctor.objects.all()
@@ -90,7 +92,8 @@ def secretaria_lista(request):
         return render(request,
                       'citasmedicas/mensajes_usuarios.html')
     secretarias = Secretaria.objects.filter(doctor=doctor)
-    return render(request, 'citasmedicas/secretaria_lista.html', {'secretarias': secretarias})
+    return render(request, 'citasmedicas/secretaria_lista.html',
+                  {'secretarias': secretarias})
 
 
 @login_required(login_url='login')
@@ -110,7 +113,8 @@ def secretaria_edita(request, pk):
             secretaria.nombres = datos_limpios.get('nombres')
             secretaria.apellido_paterno = datos_limpios.get('apellido_paterno')
             secretaria.apellido_materno = datos_limpios.get('apellido_materno')
-            secretaria.telefono_personal = datos_limpios.get('telefono_personal')
+            secretaria.telefono_personal = datos_limpios.get(
+                'telefono_personal')
             secretaria.save()
             return redirect('secretaria_lista')
     else:
@@ -289,8 +293,8 @@ def consultorio_editar(request, pk=0):
         except Consultorio.DoesNotExist:
             form = None
     return render(request, 'citasmedicas/consultorio_alta.html',
-        {'form_edit': form}
-    )
+                  {'form_edit': form}
+                  )
 
 
 @login_required(login_url='login')

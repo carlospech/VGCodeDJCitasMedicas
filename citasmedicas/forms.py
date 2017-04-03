@@ -7,38 +7,55 @@ from datetime import datetime
 
 
 class LoginForm(forms.Form):
-    usuario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Usuario'}))
-    contrasena = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                                       'placeholder': 'Contraseña'}))
+    usuario = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Usuario'}))
+    contrasena = forms.CharField(label='Contraseña',
+                                 widget=forms.PasswordInput(
+                                     attrs={'class': 'form-control',
+                                            'placeholder': 'Contraseña'}))
 
 
 class SecretariaForm(forms.ModelForm):
-    usuario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Usuario'}))
-    contrasena = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                                       'placeholder': 'Contraseña'}))
+    usuario = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Usuario'}))
+    contrasena = forms.CharField(label='Contraseña',
+                                 widget=forms.PasswordInput(
+                                     attrs={'class': 'form-control',
+                                            'placeholder': 'Contraseña'}))
     repite_contrasena = forms.CharField(label='Repite contraseña',
-                                        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                          'placeholder': 'Contraseña'}))
+                                        widget=forms.PasswordInput(
+                                            attrs={'class': 'form-control',
+                                                   'placeholder':
+                                                   'Contraseña'}))
 
     class Meta:
         model = Secretaria
-        fields = ('nombres', 'apellido_paterno', 'apellido_materno', 'telefono_personal')
+        fields = ('nombres', 'apellido_paterno',
+                  'apellido_materno', 'telefono_personal')
         labels = {
             'telefono_personal': 'Teléfono personal'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombres'}),
-            'apellido_paterno': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido paterno'}),
-            'apellido_materno': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido materno'}),
-            'telefono_personal': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono personal',
-                                                          'max': '9999999999'})
+            'nombres': forms.TextInput(attrs={'class': 'form-control',
+                                              'placeholder': 'Nombres'}),
+            'apellido_paterno': forms.TextInput(
+                attrs={'class':
+                       'form-control', 'placeholder': 'Apellido paterno'}),
+            'apellido_materno': forms.TextInput(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Apellido materno'}),
+            'telefono_personal': forms.NumberInput(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Teléfono personal',
+                       'max': '9999999999'})
         }
 
     def clean_usuario(self):
         datos_limpios = self.cleaned_data
         usuario = datos_limpios.get('usuario')
         if User.objects.filter(username=usuario).exists():
-            raise forms.ValidationError("El usuario '%s' ya existe. Capture uno nuevo." % usuario)
+            raise forms.ValidationError(
+                "El usuario '%s' ya existe. Capture uno nuevo." % usuario)
         return usuario
 
     def clean_repite_contrasena(self):
@@ -46,7 +63,8 @@ class SecretariaForm(forms.ModelForm):
         contrasena = datos_limpios.get('contrasena')
         repite_contrasena = datos_limpios.get('repite_contrasena')
         if contrasena != repite_contrasena:
-            raise forms.ValidationError("La contraseña no es igual, intente de nuevo.")
+            raise forms.ValidationError(
+                "La contraseña no es igual, intente de nuevo.")
         return repite_contrasena
 
 
@@ -54,16 +72,24 @@ class SecretariaEditForm(forms.ModelForm):
 
     class Meta:
         model = Secretaria
-        fields = ('nombres', 'apellido_paterno', 'apellido_materno', 'telefono_personal')
+        fields = ('nombres', 'apellido_paterno',
+                  'apellido_materno', 'telefono_personal')
         labels = {
             'telefono_personal': 'Teléfono personal'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombres'}),
-            'apellido_paterno': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido paterno'}),
-            'apellido_materno': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido materno'}),
-            'telefono_personal': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono personal',
-                                                          'max': '9999999999'})
+            'nombres': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Nombres'}),
+            'apellido_paterno': forms.TextInput(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Apellido paterno'}),
+            'apellido_materno': forms.TextInput(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Apellido materno'}),
+            'telefono_personal': forms.NumberInput(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Teléfono personal',
+                       'max': '9999999999'})
         }
 
 
@@ -93,9 +119,9 @@ class PacienteForm(forms.ModelForm):
 
 class ConsultorioForm(forms.ModelForm):
     direccion = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Direccion'}))
-    descripcion = forms.CharField(widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': ''}
+        attrs={}))
+    descripcion = forms.CharField(widget=forms.TextInput(
+        attrs={}
     ))
 
     class Meta:

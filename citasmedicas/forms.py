@@ -95,16 +95,24 @@ class SecretariaEditForm(forms.ModelForm):
 
 class PacienteForm(forms.ModelForm):
     nombre = forms.CharField(widget=forms.TextInput(
-        attrs={})
+        attrs={'class': 'form-control',
+               'placeholder': 'Nombre'})
     )
     apellido_paterno = forms.CharField(widget=forms.TextInput(
-        attrs={})
+        attrs={'class': 'form-control',
+               'placeholder': 'Apellido paterno'})
     )
     apellido_materno = forms.CharField(widget=forms.TextInput(
-        attrs={})
+        attrs={'class': 'form-control',
+               'placeholder': 'Apellido materno'})
     )
     telefono_personal = forms.CharField(widget=forms.TextInput(
-        attrs={'max': '9999999999'})
+        attrs={'class': 'form-control',
+               'placeholder': 'Teléfono personal',
+               'max': '9999999999'})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
     )
     fecha_nacimiento = forms.DateField(widget=forms.SelectDateWidget(
         years=range(1980, datetime.now().year + 1)
@@ -119,9 +127,11 @@ class PacienteForm(forms.ModelForm):
 
 class ConsultorioForm(forms.ModelForm):
     direccion = forms.CharField(widget=forms.TextInput(
-        attrs={}))
+        attrs={'class': 'form-control',
+               'placeholder': 'Direccion'}))
     descripcion = forms.CharField(widget=forms.TextInput(
-        attrs={}
+        attrs={'class': 'form-control',
+               'placeholder': 'Descripcion'}
     ))
 
     class Meta:

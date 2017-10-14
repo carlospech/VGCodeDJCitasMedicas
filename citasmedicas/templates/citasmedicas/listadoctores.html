@@ -1,0 +1,46 @@
+{% extends "citasmedicas/base.html" %}
+{% include 'citasmedicas/_messages.html' %}
+
+{% block content %}
+  {% csrf_token %} 
+  <div id="editor">
+    <div class="container">
+      <h2>Post doctor</h2>
+      <label class="form-label" for="usuario">Doctor usuario</label>
+      <select id="usuario" class="form-control" v-model="usuario">
+        <option v-for="doctor in doctores" :value="doctor.usuario">[[ doctor.nombres ]]</option>
+      </select>
+      <label class="form-label" for="nombres">Doctor nombres</label>
+      <input class="form-control" id="nombres" v-model="nombres">
+      <label class="form-label" for="apellido_paterno">Doctor apellido paterno</label>
+      <input class="form-control" id="apellido_paterno" v-model="apellido_paterno">
+      <label class="form-label" for="apellido_materno">Doctor apellido materno</label>
+      <input class="form-control" id="apellido_materno" v-model="apellido_materno">
+      <label class="form-label" for="titulo">Doctor titulo</label>
+      <input class="form-control" id="titulo" v-model="titulo">
+      <label class="form-label" for="especialidad">Doctor especialidad</label>
+      <input class="form-control" id="especialidad" v-model="especialidad">
+      <label class="form-label" for="cedula_profesional">Doctor cedula profesional</label>
+      <input class="form-control" id="cedula_profesional" v-model="cedula_profesional">
+      <label class="form-label" for="cedula_especialidad">Doctor cedula especialidad</label>
+      <input class="form-control" id="cedula_especialidad" v-model="cedula_especialidad">
+      <label class="form-label" for="registro_ssa">Doctor registro ssa</label>
+      <input class="form-control" id="registro_ssa" v-model="registro_ssa">
+      <button class="btn" v-on:click="addDoctor()">Agregar</button>
+    </div>
+    <div class="container">
+      <h2>Doctores</h2>
+        <p v-if="doctores.length == 0">No hay doctores disponibles</p>
+        <div v-for="doctor in doctores" class="doctores container">
+          <div class="col-sm-12">
+            <h3>[[ doctor.nombres ]] [[ doctor.apellido_paterno ]]</h3>
+          </div>
+          <div class="col-sm-12">
+            <p>[[ doctor.titulo ]]</p>
+            <button class="btn" v-on:click="removeDoctor($index)"><span class="glyphicon glyphicon-trash pull-right"></span></button>
+          </div>
+        </div>
+
+    </div>
+  </div>
+{% endblock %}

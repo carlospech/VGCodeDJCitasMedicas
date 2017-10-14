@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-
+from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     url(r'^$', views.citasmedicas_index, name='citasmedicas_index'),
     url(r'^login$', views.login_page, name='login'),
@@ -20,4 +20,10 @@ urlpatterns = [
         name='consultorio_lista'),
     url(r'^consultorio/editar/(?P<pk>\d+)/$', views.consultorio_editar,
         name='consultorio_editar'),
+    url(r'^doctores/$', views.ListaDoctores.as_view()),
+    url(r'^doctores/(?P<pk>[0-9]+)/$', views.DetalleDoctores.as_view()),
+    url(r'^listadoctores/$', views.lista_doctores_api, name='listadoctores'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns, suffix_required=False,
+                                     allowed=None)

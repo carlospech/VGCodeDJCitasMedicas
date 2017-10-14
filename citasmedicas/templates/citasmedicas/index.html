@@ -1,21 +1,22 @@
 {% extends "citasmedicas/base.html" %}
 {% load static %}
 {% block content %}
-<div class="container">
-    <div class="jumbotron text-right" style="background-color:#BAE0FF;">
+<div class="container page">
+    <div class="jumbotron text-right index_medic">
         <div class="row">
             <div class="col-xs-3">
                 <img class="img-responsive" src="{% static 'citasmedicas/img/estetoscopio_consultas_1.png' %}">
             </div>
             <div class="col-xs-9">
                 <h1>Directorio de medicos</h1>
+                <a href="{% url 'login' %}">Ingresar</a>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row login-img">
         {% for doctor in doctores %}
         <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-primary doctor_card">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-9">
@@ -42,5 +43,62 @@
         </div>
         {% endfor %}
     </div>
+    <div class="featurette">
+  <div class="container-lg p-responsive pb-6">
+    <h6 class="alt-h4 text-normal text-gray text-center">
+      Citas Medicas
+    </h6>
+    <h2 class="alt-h1 lh-condensed mt-3 mb-2 text-center">
+      Aqui encontraras a los mejores medicos
+    </h2>
+    <p class="lead text-center mx-auto">
+      Citas medicas contiene los mejores consultorio medicos de la ciudad, dondre podras acudir tranquilamente
+    </p>
+  </div>
+
+  <div class="container-xl p-responsive">
+    <div class="position-relative overflow-hidden d-lg-flex pt-6">
+      <div class="col-10 col-sm-7 mx-auto mx-lg-6 mb-sm-3">
+        <img src="{% static 'citasmedicas/img/doctor-2411135_1280.png' %}" alt="" class="d-block width-fit mx-auto">
+      </div>
+      <div class="col-lg-5">
+        <a href="/features/code-review" class="summarylink">
+          <div class="summarylink-illustration">
+          </div>
+          <div class="summarylink-btn d-flex flex-justify-between flex-items-center f5 text-gray-dark rounded-1 p-sm-4 my-4 my-sm-0">
+            <div class="col-10">
+              <h3 class="alt-h3 mb-1">Doctores calificados.</h3>
+              <p class="mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum<span class="text-blue">Leer mas.</span></p>
+            </div>
+            <svg aria-hidden="true" class="octicon octicon-triangle-right text-blue" height="16" version="1.1" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>
+          </div>
+        </a>
+        <a href="/features/project-management" class="summarylink">
+          <div class="summarylink-illustration">
+          </div>
+          <div class="summarylink-btn d-flex flex-justify-between flex-items-center f5 text-gray-dark rounded-1 p-sm-4 my-4 my-sm-0">
+            <div class="col-10">
+              <h3 class="alt-h3 mb-1">Consultorios cercano</h3>
+              <p class="mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
+            </div>
+            <svg aria-hidden="true" class="octicon octicon-triangle-right text-blue" height="16" version="1.1" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>
+          </div>
+        </a>
+        <a href="/features/integrations" class="summarylink">
+          <div class="summarylink-illustration">
+            <img src="https://assets-cdn.Error: source does not appear to be markup.hub.com/images/modules/site/home-illo-team-tools.svg" alt="" class="width-fit mx-auto">
+          </div>
+          <div class="summarylink-btn d-flex flex-justify-between flex-items-center f5 text-gray-dark rounded-1 p-sm-4 my-4 my-sm-0">
+            <div class="col-10">
+              <h3 class="alt-h3 mb-1">Historial medico</h3>
+              <p class="mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
+            </div>
+            <svg aria-hidden="true" class="octicon octicon-triangle-right text-blue" height="16" version="1.1" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}

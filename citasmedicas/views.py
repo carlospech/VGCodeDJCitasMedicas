@@ -6,7 +6,20 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import redirect, render
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from citasmedicas.serializers import DoctorSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions
+from rest_framework import viewsets
+from rest_framework import generics
+from django.http import Http404
+from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
+from django.template.response import TemplateResponse
+from django.http import HttpResponse
 from citasmedicas.forms import (ConsultorioForm, LoginForm, PacienteForm,
                                 SecretariaEditForm, SecretariaForm)
 from citasmedicas.models import Consultorio, Doctor, Paciente, Secretaria
@@ -36,7 +49,7 @@ def login_page(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect(request.GET['next'])
+                    return redirect(reverse('citasmedicas_index'))
                 else:
                     mensaje = "Usuario inactivo"
             else:
@@ -144,14 +157,14 @@ def paciente_alta(request):
         form = PacienteForm(request.POST, instance=doctor)
         if form.is_valid():
             clean_data = form.cleaned_data
-            doctor_pk = doctor.pk
             nombre = clean_data.get('nombre')
             apellido_paterno = clean_data.get('apellido_paterno')
             apellido_materno = clean_data.get('apellido_materno')
             telefono_personal = clean_data.get('telefono_personal')
             fecha_nacimiento = clean_data.get('fecha_nacimiento')
+            email = clean_data.get('email')
             paciente_model = Paciente()
-            paciente_model.doctor = doctor_pk
+            paciente_model.doctor = doctor
             paciente_model.nombre = nombre
             paciente_model.apellido_paterno = apellido_paterno
             paciente_model.apellido_materno = apellido_materno
@@ -323,3 +336,70 @@ def consultorio_lista(request):
         'quer': query
     }
     return render(request, 'citasmedicas/consultorio_alta.html', context)
+
+
+def lista_doctores_api(request):
+    context = {}
+    context['doctores'] = Doctor.objects.all()
+    html = TemplateResponse(request,
+                            'citasmedicas/listadoctores.html', context)
+    return HttpResponse(html.render())
+
+
+class DoctoresViewSet(viewsets.ModelViewSet):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+
+@permission_classes((permissions.IsAuthenticated,))
+class ListaDoctores(APIView):
+    """
+    Retrieve, update or delete a doctores instance.
+    """
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+    def get(self, request, format=None):
+        doctores = Doctor.objects.all()
+        serializer = DoctorSerializer(doctores, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = DoctorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((permissions.AllowAny,))
+class DetalleDoctores(APIView):
+    """
+    Retrieve, update or delete a doctores instance.
+    """
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+    def get_object(self, pk):
+        try:
+            return Doctor.objects.get(pk=pk)
+        except Doctor.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        serializer = DoctorSerializer(doctor)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        serializer = DoctorSerializer(doctor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        doctor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

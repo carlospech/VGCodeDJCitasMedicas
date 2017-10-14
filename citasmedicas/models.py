@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 
 
 class Doctor(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE,
+                                related_name='doctor')
     nombres = models.CharField(max_length=100)
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50, blank=True)
@@ -23,7 +24,7 @@ class Doctor(models.Model):
 
 
 class Secretaria(models.Model):
-    doctor = models.ForeignKey(Doctor)
+    doctor = models.ForeignKey(Doctor, related_name='secretaria')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nombres = models.CharField(max_length=100)
     apellido_paterno = models.CharField(max_length=50)
@@ -35,7 +36,8 @@ class Secretaria(models.Model):
 
 
 class Paciente(models.Model):
-    doctor = models.ForeignKey(Doctor)
+    doctor = models.ForeignKey(Doctor, related_name='paciente')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     apellido_paterno = models.CharField(max_length=150)
     apellido_materno = models.CharField(max_length=150)

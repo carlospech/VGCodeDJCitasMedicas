@@ -9,7 +9,11 @@
     <link href="{% static 'citasmedicas/bootstrap-3.3.7/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'citasmedicas/bootstrap-3.3.7/css/bootstrap-theme.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'citasmedicas/css/vgcode.css' %}" rel="stylesheet" type="text/css">
+
     <script src="{% static 'citasmedicas/js/jquery-3.1.1.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.16/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+    <script src="{% static 'citasmedicas/js/main.js' %}"></script>
     <script src="{% static 'citasmedicas/bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
 </head>
 <body>
@@ -45,22 +49,37 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span>Bienvenido: {{ user.username }}</a></li>
                     <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Salir</a></li>
                 </ul>
             </div>
         </nav>
     {% endif %}
 </div>
-<div class="starter-template"  >
+<div class="starter-template"   >
     {% include 'citasmedicas/_messages.html' %}
     {% block content %}{% endblock content %}
 </div>
 <div class="container">
-    <div class="row">
-        <footer class="footer" style="text-align:center;border-top:1px solid #bbb;margin-top:15px;">
-            <p>&copy; 2017 VG-Code</p>
-        </footer>
-    </div>
+  <nav class="navbar navbar-inverse  navbar-fixed-bottom" id="footer">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="#">&copy; 2017 VG-Code</a>
+                <a class="navbar-brand" href="#"></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div><!--/.nav-colapse -->
+        </div>
+    </nav>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 {% block content %}
   {% load static %}
   {% static "citasmedicas/img/computer.jpg" as myphoto %}
-  <div class="container" style="background-image: url('{{ myphoto }}'); background-size:110%,110%;">    
+  <div class="container">
     <h1 style="font-size:63px;text-align:center;">Paciente</h1>
     <div class="row">
       <div class="group col-lg-20">
@@ -14,28 +14,24 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="group">
-                  {{ form.nombre }}
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
                   <label>Nombre</label>
+                  {{ form.nombre }}
                 </div>
                 <div class="group">
-                  {{ form.apellido_paterno }}
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
                   <label>Apellido Paterno</label>
+                  {{ form.apellido_paterno }}
                 </div>
                 <div class="group">
-                  {{ form.apellido_materno }}
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
                   <label>Apellido Materno</label>
+                  {{ form.apellido_materno }}
                 </div>
                 <div class="group">
-                  {{ form.telefono_personal }}
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
+                  <label>Correo</label>
+                  {{ form.email }}
+                </div>
+                <div class="group">
                   <label>Telefono Personal</label>
+                  {{ form.telefono_personal }}
                 </div>
                 <div class="group">
                   <span>Fecha de nacimiento:</span>
@@ -59,28 +55,24 @@
               <form method="POST">
                   {% csrf_token %}
                   <div class="group">
-                    {{ form_edit.nombre }}
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
                     <label>Nombre</label>
+                    {{ form_edit.nombre }}
                   </div>
                   <div class="group">
-                    {{ form_edit.apellido_paterno }}
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
                     <label>Apellido Paterno</label>
+                    {{ form_edit.apellido_paterno }}
                   </div>
                   <div class="group">
-                    {{ form_edit.apellido_materno }}
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
                     <label>Apellido Materno</label>
+                    {{ form_edit.apellido_materno }}
                   </div>
                   <div class="group">
-                    {{ form_edit.telefono_personal }}
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
+                    <label>Correo</label>
+                    {{ form_edit.email }}
+                  </div>
+                  <div class="group">
                     <label>Telefono Personal</label>
+                    {{ form_edit.telefono_personal }}
                   </div>
                   <div class="group">
                     <span>Fecha de nacimiento:</span>
